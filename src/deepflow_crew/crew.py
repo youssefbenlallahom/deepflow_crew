@@ -72,7 +72,6 @@ class DeepflowCrew():
             tools=[pdf_search_tool],
             verbose=True,
             reasoning=True,
-            max_reasoning_attempts=2,
             llm=llm
         )
 
