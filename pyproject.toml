@@ -7,8 +7,12 @@ requires-python = ">=3.10,<3.13"
 dependencies = [
     "chromadb>=1.1.1",
     "crewai[tools]>=0.121.0,<1.0.0",
+    "matplotlib>=3.9.0",
     "ollama>=0.6.1",
+    "pandas>=2.3.3",
+    "plotly>=5.24.0",
     "pypdf2>=3.0.0",
+    "scikit-learn>=1.5.0",
 ]
 
 [project.scripts]
@@ -17,6 +21,7 @@ run_crew = "deepflow_crew.main:run"
 train = "deepflow_crew.main:train"
 replay = "deepflow_crew.main:replay"
 test = "deepflow_crew.main:test"
+chroma_viz = "deepflow_crew.tools.chroma_viz:main"
 
 [build-system]
 requires = ["hatchling"]

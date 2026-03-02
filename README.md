@@ -170,6 +170,28 @@ Keep `legal_analyst` tool-less. Keep the same report structure and word range fo
 
 ---
 
+## 6 · Chroma Embedding Visualization
+
+### Simple Run Command
+Use this (no args needed):
+
+```bash
+py .\src\deepflow_crew\tools\chroma_viz.py
+```
+
+Default output files:
+- `.chroma/chroma_viz_interactive_3d.html` (interactive, recommended)
+- `.chroma/chroma_viz_3d.png` (static image)
+- `.chroma/chroma_viz_points_3d.csv` (projected coordinates + previews)
+
+### How to Interpret the Plot
+- Points close together represent chunks with similar semantic meaning.
+- Color corresponds to `chunk_index` from metadata.
+- Hover a point to inspect chunk id and document preview.
+- In 3D HTML: rotate with left mouse, pan with right mouse, zoom with wheel.
+
+---
+
 <div align="center">
 
 <img src="Asset 60.png" alt="DeepFlow" width="100"/>
