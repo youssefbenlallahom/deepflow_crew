@@ -28,6 +28,6 @@ Thumbs.db
 # CrewAI
 *.db
 db/
-
+.chroma/
 # Output (regenerated on each run)
 epstein_files_report.md
