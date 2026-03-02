@@ -1,7 +1,7 @@
 research_task:
   description: >
     Conduct focused evidence collection on {topic}.
-    You MUST use only the PDF search tool on the provided document.
+    You MUST use only the PDF search tool on the provided document: {pdf_path}.
     Mandatory tool-usage policy:
     - Call PDFSearchTool at least 2 times before finalizing.
     - Do not use web search or website scraping tools in this task.

@@ -1,26 +1,46 @@
-# DeepFlow Crew Workshop and Candidate Exercise
+<div align="center">
 
-This repository is a CrewAI workshop project with a two-agent pipeline.
-Current baseline is intentionally simple: PDF-only evidence collection.
+<img src="Asset 60.png" alt="DeepFlow — AI For All" width="280"/>
 
-## 1) Dependencies and Requirements
+<br/>
+
+# DeepFlow Crew Workshop
+
+**Intro to AI Agents powered by CrewAI**
+
+[![CrewAI](https://img.shields.io/badge/Framework-CrewAI-blue?style=for-the-badge)](https://crewai.com)
+[![Python](https://img.shields.io/badge/Python-3.10--3.12-yellow?style=for-the-badge&logo=python)](https://python.org)
+[![Ollama](https://img.shields.io/badge/Embeddings-Ollama_bge--m3-green?style=for-the-badge)](https://ollama.com)
+
+*A hands-on workshop by the **DeepFlow** club — AI For All.*
+
+</div>
+
+---
+
+## 1 · Dependencies and Requirements
 
 ### Python and Tooling
-- Python: `>=3.10,<3.13`
-- Package manager/environment: `uv`
-- Crew runner: `crewai`
+| Requirement | Version / Note |
+|---|---|
+| Python | `>=3.10, <3.13` |
+| Package manager | [`uv`](https://docs.astral.sh/uv/) |
+| Crew runner | `crewai` CLI |
 
-### Project Dependencies
-From `pyproject.toml`:
-- `crewai[tools]>=0.121.0,<1.0.0`
-- `chromadb>=1.1.1`
-- `ollama>=0.6.1`
-- `pypdf2>=3.0.0`
+### Project Dependencies (from `pyproject.toml`)
+| Package | Purpose |
+|---|---|
+| `crewai[tools]>=0.121.0,<1.0.0` | Agent framework + built-in tools |
+| `chromadb>=1.1.1` | Local vector store for PDF RAG |
+| `ollama>=0.6.1` | Local embedding model client |
+| `pypdf2>=3.0.0` | PDF text extraction |
 
 ### Local Services and Keys
-- Ollama running locally on `http://localhost:11434`
-- Embedding model available in Ollama: `bge-m3`
-- `.env` must include: `OPENROUTER_API_KEY`
+- **Ollama** running on `http://localhost:11434` with model `bge-m3` pulled.
+- `.env` must include:
+  ```
+  OPENROUTER_API_KEY=your_key_here
+  ```
 
 ### Install and Run
 ```bash
@@ -30,77 +50,116 @@ crewai run
 
 ---
 
-## 2) What Exists in the Workshop (Current Baseline)
+## 2 · What Exists in the Workshop (Current Baseline)
 
 ### Agents
-- `investigative_researcher`: collects evidence from the PDF only.
-- `legal_analyst`: writes the final report from the researcher output.
+
+| Agent | Role | Tools |
+|---|---|---|
+| `investigative_researcher` | Extracts evidence from the PDF | `PDFSearchTool` |
+| `legal_analyst` | Writes the final structured report | *None (synthesis only)* |
 
 ### Tasks
-- `research_task`: PDF-grounded evidence brief with required citations and tool execution log.
-- `reporting_task`: final 600–900 word legal-style report, based on research brief.
 
-### Tooling Strategy
-- Researcher has only `PDFSearchTool`.
-- Analyst is intentionally tool-less (synthesis role).
+| Task | Agent | Purpose |
+|---|---|---|
+| `research_task` | `investigative_researcher` | PDF-grounded evidence brief with citations and tool execution log |
+| `reporting_task` | `legal_analyst` | 600–900 word legal-style Markdown report based on the evidence brief |
 
----
-
-## 3) Workflow Step by Step
-
-1. `crewai run` starts the crew defined in `crew.py`.
-2. `research_task` is assigned to `investigative_researcher`.
-3. Researcher queries the indictment PDF using `PDFSearchTool`.
-4. Researcher returns a structured evidence brief:
-	- findings,
-	- PDF page/section citations,
-	- named entities,
-	- contradictions/open questions,
-	- `Tool Execution Log`.
-5. `reporting_task` is assigned to `legal_analyst`.
-6. Analyst consumes the evidence brief and produces the final report in `epstein_files_report.md`.
-
-This baseline demonstrates agent specialization and handoff before introducing multi-tool web corroboration.
+### Why the analyst has no tools
+An agent in CrewAI is **not** just an LLM call — it has a role, goal, backstory, task context, and collaboration behavior. Tools are optional capabilities. A tool-less agent is a valid **synthesis agent** that demonstrates the difference between a raw LLM and an orchestrated agent.
 
 ---
 
-## 4) Candidate Exercise (GitHub Assignment)
+## 3 · Workflow Step by Step
+
+```
+crewai run
+    │
+    ▼
+┌──────────────────────────────────────┐
+│  1. research_task                    │
+│     Agent: investigative_researcher  │
+│     Tool:  PDFSearchTool             │
+│                                      │
+│     → queries indictment PDF         │
+│     → returns evidence brief:        │
+│       • 8-12 findings + citations    │
+│       • named entities               │
+│       • contradictions               │
+│       • Tool Execution Log           │
+└──────────────┬───────────────────────┘
+               │ evidence brief passed
+               ▼
+┌──────────────────────────────────────┐
+│  2. reporting_task                   │
+│     Agent: legal_analyst             │
+│     Tools: none                      │
+│                                      │
+│     → synthesizes evidence brief     │
+│     → writes final report:           │
+│       Introduction, Key Figures,     │
+│       Timeline, Legal Proceedings,   │
+│       Conclusion                     │
+│     → saves to epstein_files_report.md│
+└──────────────────────────────────────┘
+```
+
+---
+
+## 4 · Candidate Exercise
 
 ### Goal
-Extend the workshop so the researcher combines PDF evidence with web corroboration.
+Extend the researcher so it combines **PDF evidence** with **live web corroboration** using two additional CrewAI tools.
 
-### Candidate Tasks
-1. In `src/deepflow_crew/crew.py`, add `SerperDevTool` and `ScrapeWebsiteTool` to `investigative_researcher` tools.
-2. In `src/deepflow_crew/config/tasks.yaml`, update `research_task` prompt:
-	- require PDF evidence and web corroboration,
-	- require at least one web-backed finding,
-	- keep `Tool Execution Log` mandatory.
-3. Keep `legal_analyst` tool-less.
-4. Keep the same report structure and word range for `reporting_task`.
+### What You Need to Do
+
+**Step 1 — Add tools in code**
+In `src/deepflow_crew/crew.py`, add `SerperDevTool` and `ScrapeWebsiteTool` to the `investigative_researcher` tools list.
+
+**Step 2 — Update the task prompt**
+In `src/deepflow_crew/config/tasks.yaml`, update `research_task` so that:
+- web corroboration is required in addition to PDF evidence,
+- at least one finding must be web-source-backed,
+- `Tool Execution Log` remains mandatory.
+
+**Step 3 — Do not touch the analyst**
+Keep `legal_analyst` tool-less. Keep the same report structure and word range for `reporting_task`.
 
 ### Acceptance Criteria
-- Crew logs show real tool calls (PDF + at least one web tool).
-- Research output includes `Tool Execution Log` with concrete queries/URLs.
-- Final report remains source-backed and structured.
-- No hallucinated links presented as verified evidence.
+- [ ] Crew logs show real tool calls (PDF + at least one web tool).
+- [ ] Research output includes `Tool Execution Log` with concrete queries/URLs.
+- [ ] Final report remains source-backed and structured.
+- [ ] No hallucinated links presented as verified evidence.
 
 ### Submission Checklist
-- Short note describing code changes.
-- One run snippet showing tool calls.
-- Final generated `epstein_files_report.md`.
+- [ ] Short note describing your code changes.
+- [ ] One run snippet showing tool calls in the terminal output.
+- [ ] Final generated `epstein_files_report.md`.
 
 ---
 
-## 5) Suggested Evaluation Rubric
+## 5 · Helpful Links for Tool Integration
 
-- Correctness of tool integration (30%)
-- Quality of evidence and citations (30%)
-- Prompt/task design clarity (20%)
-- Clean handoff to reporting agent (20%)
+| Resource | Link |
+|---|---|
+| CrewAI Tools Overview | https://docs.crewai.com/concepts/tools |
+| SerperDevTool (web search) | https://docs.crewai.com/tools/serperapitool |
+| ScrapeWebsiteTool | https://docs.crewai.com/tools/scrapewebsitetool |
+| PDFSearchTool (already used) | https://docs.crewai.com/tools/pdfsearchtool |
+| Creating Custom Tools | https://docs.crewai.com/concepts/tools#creating-your-own-tools |
+| CrewAI GitHub | https://github.com/crewAIInc/crewAI |
 
 ---
 
-## 6) References
+<div align="center">
 
-- CrewAI Docs: https://docs.crewai.com
-- CrewAI GitHub: https://github.com/crewAIInc/crewAI
+<img src="Asset 60.png" alt="DeepFlow" width="100"/>
+
+<br/>
+
+**DeepFlow — AI For All**
+
+*Built with curiosity. Powered by agents.*
+
+</div>
