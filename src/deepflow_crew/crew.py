@@ -13,26 +13,26 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-"""llm = LLM(
+llm = LLM(
     model=os.getenv("MODEL"),
     api_key=os.getenv("AZURE_API_KEY"),
     base_url=os.getenv("AZURE_ENDPOINT"),
     api_version=os.getenv("AZURE_API_VERSION", "2024-06-01"),
     temperature=0.1
-)"""
+)
 """llm = LLM(
     model="gemini/gemini-2.5-pro",
     api_key=os.getenv("GEMINI_API_KEY"),  # Or set GOOGLE_API_KEY/GEMINI_API_KEY
     temperature=0.1
 )"""
 
-llm = LLM(
+"""llm = LLM(
     model="openrouter/qwen/qwen3-next-80b-a3b-instruct",
     api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1/chat/completions",
     reasoning_effort="high",
     temperature=0.1
-)
+)"""
 # ── PDFSearchTool with Ollama bge-m3 embeddings + local ChromaDB ──
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 CHROMA_DIR = str(PROJECT_ROOT / ".chroma" / "indictment_db")
@@ -71,7 +71,6 @@ class DeepflowCrew():
             config=self.agents_config['investigative_researcher'], # type: ignore[index]
             tools=[pdf_search_tool],
             verbose=True,
-            reasoning=True,
             llm=llm
         )
 

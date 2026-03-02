@@ -21,8 +21,16 @@ def run():
     """
     Run the crew.
     """
+    if len(sys.argv) > 1:
+        topic = " ".join(sys.argv[1:])
+    else:
+        topic = input("Enter your research topic: ").strip()
+
+    if not topic:
+        topic = "When and how did Jeffrey Epstein die?"
+
     inputs = {
-        'topic': "Please review the provided indictment document and find the exact addresses of Jeffrey Epstein's primary residences in New York and Palm Beach. Once you have those specific addresses, I want to know what happened to those properties after his death. Look up who bought them, how much they sold for, and what their current status or planned use is. Please read the full text of the most recent news articles about these real estate sales so you can give me a detailed and accurate update.",
+        'topic': topic,
         'current_year': str(datetime.now().year),
         'pdf_path': PDF_PATH
     }

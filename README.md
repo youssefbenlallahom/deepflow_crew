@@ -105,12 +105,30 @@ crewai run
 └──────────────────────────────────────┘
 ```
 
+### Test Questions (PDF-only)
+These questions can be fully answered using only the indictment PDF and `PDFSearchTool`:
+
+1. **What charges were filed against Jeffrey Epstein in the 2019 indictment?**
+2. **Who is Minor Victim-1 and what role did they play in the alleged conspiracy?**
+3. **What is the address of the New York Residence listed for forfeiture?**
+
+Use these to verify your baseline is working correctly before moving to the exercise.
+
 ---
 
 ## 4 · Candidate Exercise
 
 ### Goal
 Extend the researcher so it combines **PDF evidence** with **live web corroboration** using two additional CrewAI tools.
+
+### Why This Exercise Exists
+The following questions **cannot** be answered from the PDF alone — that's exactly why we need web tools:
+
+1. **What happened to Epstein's estate after his death?**
+2. **What was Epstein's estimated net worth and source of wealth?**
+3. **Who was the presiding judge in Epstein's 2019 case?**
+
+Your job is to make the crew capable of answering these by adding `SerperDevTool` and `ScrapeWebsiteTool`.
 
 ### What You Need to Do
 

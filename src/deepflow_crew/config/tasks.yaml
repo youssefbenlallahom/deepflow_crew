@@ -1,29 +1,48 @@
 research_task:
   description: >
-    Conduct focused evidence collection on {topic}.
-    You MUST use only the PDF search tool on the provided document: {pdf_path}.
-    Mandatory tool-usage policy:
-    - Call PDFSearchTool at least 2 times before finalizing.
-    - Do not use web search or website scraping tools in this task.
-    - If these conditions are not met, return exactly: TOOL_USAGE_REQUIREMENT_NOT_MET
-    Build an evidence package for the next agent with:
-    - key figures (who)
-    - timeline events (when)
-    - legal actions/proceedings (what happened legally)
-    - source reliability notes (why source is trustworthy)
+    Conduct focused evidence collection on {topic} using ONLY the provided PDF document.
+    
+    MANDATORY PDF USAGE INSTRUCTIONS:
+    - You MUST extract ALL information from {pdf_path}.
+    - This is the 2019 sealed federal indictment (Case 19Cr.490, SDNY) charging Jeffrey Epstein
+      with sex trafficking conspiracy and sex trafficking.
+    - Extract comprehensively: charges, statutory citations, all named individuals, dates, 
+      locations, factual allegations, and forfeiture provisions.
+    
+    WHEN TO USE THE PDF:
+    - For ALL claims about: the 2019 indictment, charges filed, legal allegations, 
+      named victims/employees, specific dates (2002-2005), properties (9 East 71st St),
+      and prosecution's factual assertions.
+    
+    PDF SEARCH STRATEGY:
+    - Search for: "COUNT ONE", "COUNT TWO", "Minor Victim", "Employee", "2002", "2005", 
+      "New York Residence", "Palm Beach Residence", "forfeit", "conspiracy"
+    - Extract specific paragraph numbers and page references for each finding.
+    
+    Build an evidence package with:
+    - key figures (who): Epstein, Employee-1, Employee-2, Employee-3, Minor Victim-1/2/3
+    - timeline events (when): 2002-2005 period with specific "in or about" dates
+    - legal actions/proceedings (what): Count One (conspiracy), Count Two (substantive),
+      statutory citations (18 U.S.C. §§ 1591, 1594)
+    - source reliability notes: Federal grand jury indictment, filed by USAO SDNY
+    
     Rules:
-    - Prefer primary or highly credible sources.
-    - If two sources conflict, note the conflict explicitly.
+    - Use ONLY the PDF. Do not reference external sources.
+    - Clearly label all findings as "ALLEGED" (indictment language) vs. "VERIFIED" (if mentioned).
+    - Note any gaps or unclear information in the document.
     - Do not write the final report narrative.
+    
     The current year is {current_year}.
+    
   expected_output: >
     A structured evidence brief in Markdown containing:
-    1) 8-12 bullet findings,
-    2) PDF citation for each finding (page/section),
-    3) named entities list,
-    4) unresolved contradictions/questions,
-    5) a final section titled "Tool Execution Log" with 2+ bullets in this exact pattern:
-       - tool: <tool_name> | purpose: <why used> | query_or_url: <input used> | evidence_used_in_finding: <finding number(s)>.
+    1) 8-12 bullet findings with PDF page/paragraph citations,
+    2) source reference for each finding as "PDF: Page X, Paragraph Y",
+    3) named entities list (Defendant, Employees, Minor Victims, Properties),
+    4) document limitations/gaps noted,
+    5) a final section titled "Tool Execution Log" with:
+       - tool: PDFSearchTool | purpose: Extract indictment details | query_or_url: Jeffrey_Epstein_Indictment_Searchable.pdf | evidence_used_in_finding: All findings 1-12.
+       
   agent: investigative_researcher
 
 reporting_task:
