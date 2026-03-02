@@ -1,0 +1,41 @@
+research_task:
+  description: >
+    Conduct focused evidence collection on {topic}.
+    You MUST use only the PDF search tool on the provided document.
+    Mandatory tool-usage policy:
+    - Call PDFSearchTool at least 2 times before finalizing.
+    - Do not use web search or website scraping tools in this task.
+    - If these conditions are not met, return exactly: TOOL_USAGE_REQUIREMENT_NOT_MET
+    Build an evidence package for the next agent with:
+    - key figures (who)
+    - timeline events (when)
+    - legal actions/proceedings (what happened legally)
+    - source reliability notes (why source is trustworthy)
+    Rules:
+    - Prefer primary or highly credible sources.
+    - If two sources conflict, note the conflict explicitly.
+    - Do not write the final report narrative.
+    The current year is {current_year}.
+  expected_output: >
+    A structured evidence brief in Markdown containing:
+    1) 8-12 bullet findings,
+    2) PDF citation for each finding (page/section),
+    3) named entities list,
+    4) unresolved contradictions/questions,
+    5) a final section titled "Tool Execution Log" with 2+ bullets in this exact pattern:
+       - tool: <tool_name> | purpose: <why used> | query_or_url: <input used> | evidence_used_in_finding: <finding number(s)>.
+  agent: investigative_researcher
+
+reporting_task:
+  description: >
+    Using ONLY the researcher's evidence brief, produce the final report on {topic}.
+    Do not perform new web research unless a critical citation is missing.
+    Write with neutral, legal-analytic tone and clearly distinguish:
+    - verified facts,
+    - allegations/claims,
+    - open questions.
+    Required sections: Introduction, Key Figures, Timeline, Legal Proceedings, Conclusion.
+    Keep total report length between 600 and 900 words.
+  expected_output: >
+    A concise Markdown report (no '```' blocks), 600-900 words, based on the evidence brief and source-backed claims.
+  agent: legal_analyst

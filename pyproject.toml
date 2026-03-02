@@ -1,0 +1,26 @@
+[project]
+name = "deepflow_crew"
+version = "0.1.0"
+description = "deepflow-crew using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "chromadb>=1.1.1",
+    "crewai[tools]>=0.121.0,<1.0.0",
+    "ollama>=0.6.1",
+    "pypdf2>=3.0.0",
+]
+
+[project.scripts]
+deepflow_crew = "deepflow_crew.main:run"
+run_crew = "deepflow_crew.main:run"
+train = "deepflow_crew.main:train"
+replay = "deepflow_crew.main:replay"
+test = "deepflow_crew.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"
